@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>မင်းအတွက်သာ 💝</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff0f8, #ffe4f2, #ffd6e8, #ffc2d1);
+            background-size: 400% 400%;
+            animation: bgFlow 8s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        @keyframes bgFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .main-title {
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff6b9d, #c44569, #ff6b9d);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s linear infinite;
+        }
+        @keyframes titleGlow {
+            to { background-position: 200% center; }
+        }
+
+        .sub-text {
+            font-size: clamp(1rem, 3.5vw, 1.3rem);
+            color: #b84a74;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* 🖼️ GIF ပုံဧရိယာ */
+        .gif-box {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 30px;
+            cursor: pointer;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(255, 105, 180, 0.35);
+            transition: transform 0.3s ease;
+            background: #fff;
+        }
+        .gif-box:hover { transform: scale(1.08); }
+        .gif-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 💬 မက်ဆေ့ချ်အကွက် */
+        .msg-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #fff, #fff0f5);
+            color: #992e5c;
+            padding: 35px 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(255, 105, 180, 0.3);
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.4s ease;
+            max-width: 85%;
+            border: 2px solid rgba(255, 182, 193, 0.4);
+        }
+        .msg-card.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        .msg-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        .close-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(90deg, #ff758c, #ff7eb3);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .close-btn:hover { transform: scale(1.05); }
+
+        /* ✨ ပျံထွက်လာတဲ့အရာများ */
+        .floating {
+            position: absolute;
+            font-size: 28px;
+            animation: floatUp 2s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-120px) scale(1.3); opacity: 0; }
+        }
+
+        .falling {
+            position: absolute;
+            font-size: 24px;
+            animation: fallSlow 8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes fallSlow {
+            0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">မင်းကို သတိရနေတယ် 💖</h1>
+        <p class="sub-text">အောက်ပုံလေးကို နှိပ်ကြည့်ပါ...<br>မင်းအတွက် ပြောချင်တဲ့စကားတွေ ရှိနေတယ် 💌</p>
+
+        <!-- 🖼️ GIF ပုံဒီမှာထည့်ပါ -->
+        <div class="gif-box" id="gifBtn">
+            <img src="bear.gif" alt="ချစ်စရာပုံ">
+        </div>
+    </div>
+
+    <div class="msg-card" id="msgBox">
+        <p class="msg-text" id="msgText"></p>
+        <button class="close-btn" onclick="closeMsg()">သိပြီ 💗</button>
+    </div>
+
+    <script>
+        // 💌 ချစ်စရာစာများ
+        const loveMessages = [
+            'မင်းကို တွေ့ကတည်းက ကမ္ဘာတစ်ခုလုံး ပိုလှလာသလိုပဲ 💫\nမင်းက ကျွန်တော့်ရဲ့ အလှပဆုံး ကံကောင်းမှုပါ 💖',
+            'တစ်နေ့တာလုံး မင်းကိုပဲ တွေးနေခဲ့တယ် 🥰\nမင်းပြုံးပြလိုက်တာနဲ့ ကျွန်တော့်နေ့စဉ် ပြည့်စုံသွားပြီ 💗',
+            'အကြောင်းပြချက်မလိုဘူး... မင်းကို ချစ်တယ်ဆိုတာ အမှန်ပဲ 💝\nအချိန်တိုင်း မင်းအတွက် ရှိနေမယ် 💍',
+            'မင်းရဲ့အပြုံးက ကျွန်တော့်ကို အရာရာကို ကျော်ဖြတ်နိုင်စေတယ် 💪✨\nမင်းကြောင့် ပိုပြီးကောင်းတဲ့သူတစ်ယောက် ဖြစ်လာချင်တယ် 💖',
+            'အဝေးကနေပဲ ဖြစ်ဖြစ် မင်းကို အမြဲဂရုစိုက်နေမယ် 🤗💫\nမင်းအဆင်ပြေဖို့သာ ကျွန်တော့်ဆုတောင်းပါ 💗',
+            'ဘယ်လိုအခြေအနေမျိုးမှာပဲ ဖြစ်ဖြစ်... ကျွန်တော် မင်းဘေးကနေ ဘယ်တော့မှ မထွက်သွားဘူး 💖\nအမြဲအတူတူပါပဲ ✨'
+        ];
+
+        const hearts = ['💖','💕','💗','✨','💝','🌸','🦋','⭐'];
+
+        const gifBtn = document.getElementById('gifBtn');
+        const msgBox = document.getElementById('msgBox');
+        const msgText = document.getElementById('msgText');
+
+        gifBtn.addEventListener('click', (e) => {
+            // နှလုံးသားတွေ ပျံထွက်
+            for (let i = 0; i < 12; i++) {
+                createFloating(e.clientX, e.clientY);
+            }
+            // စာကျပန်းပေါ်လာ
+            const randomMsg = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+            msgText.innerText = randomMsg;
+            msgBox.classList.add('show');
+        });
+
+        function closeMsg() {
+            msgBox.classList.remove('show');
+        }
+
+        function createFloating(x, y) {
+            const el = document.createElement('div');
+            el.className = 'floating';
+            el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+            el.style.left = x + (Math.random() * 80 - 40) + 'px';
+            el.style.top = y + (Math.random() * 60 - 30) + 'px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 2000);
+        }
+
+        // နောက်ခံပုံများ ကျလာ
+        setInterval(() => {
+            const el = document.createElement('div');
+            el.className = 'falling';
+            el.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+            el.style.left = Math.random() * 100 + '%';
+            el.style.animationDuration = (5 + Math.random() * 5) + 's';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 10000);
+        }, 1200);
+    </script>
+</body>
+  </html>
+  
